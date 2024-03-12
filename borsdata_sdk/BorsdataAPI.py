@@ -30,13 +30,13 @@ class BorsdataAPI:
         self._root = "{host}/{version}".format(host=self._uri, version=self._version)
 
     def get_instrument_reports(
-        self, instrument_id: int, type="quarter", max_count=10
+        self, instrument_id: int, report_type="quarter", max_count=10
     ) -> List[Report]:
         """Get reports for provided instrument
 
         Args:
-            insId (str): instrument id
-            type (str, optional): report type, one of year|quarter|r12. Defaults to 'quarter'.
+            instrument_id (str): instrument id
+            report_type (str, optional): report type, one of year|quarter|r12. Defaults to 'quarter'.
             max_count (int, optional): max number of reports to return. Defaults to 10.
 
         Raises:
@@ -46,7 +46,7 @@ class BorsdataAPI:
             List[Report]: list of Reports
         """
 
-        status, data = self._get(endpoint=f"/instruments/{instrument_id}/reports/{type}",
+        status, data = self._get(endpoint=f"/instruments/{instrument_id}/reports/{report_type}",
                                  query_params={"maxCount": max_count})
 
         if status != HTTPStatus.OK:
@@ -262,15 +262,19 @@ class BorsdataAPI:
 
         return inner_data
 
-    def _get(self, endpoint, query_params={}) -> Tuple[int, dict]:
+    def _get(self, endpoint, query_params=None) -> Tuple[int, dict]:
         """Perform a remote request to the API and retries on rate limit responses, returns json payload on success.
 
         Arguments:
             endpoint {str} -- endpoint to access, ex: `instruments/StockSplits`.
+            query_params {dict} -- query parameters to append to the request.
 
         Returns:
             (int, dict) -- The first entry, holds the status code of the response; the second, holds the response content parsed from json.
         """
+
+        if query_params is None:
+            query_params = {}
 
         while True:
             target = self._root + endpoint
