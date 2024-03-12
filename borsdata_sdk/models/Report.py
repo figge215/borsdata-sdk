@@ -31,7 +31,7 @@ class Report:
     stock_price_low = 0
     report_start_date =  ""
     report_end_date =  ""
-    broken_discal_year = True
+    broken_fiscal_year = True
     currency =  ""
     currency_ratio = 0
     net_sales = 0

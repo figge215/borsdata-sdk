@@ -13,7 +13,7 @@ class Instrument:
     listingDate: str
 
     def __init__(self, insId, name, urlName, instrument, isin, ticker, yahoo, sectorId, marketId, branchId, countryId,
-                 listingDate):
+                 listingDate, stockPriceCurrency, reportCurrency):
         self.insId = insId
         self.name = name
         self.urlName = urlName
@@ -26,7 +26,9 @@ class Instrument:
         self.branchId = branchId
         self.countryId = countryId
         self.listingDate = listingDate
-
+        ## added as it seems it been added to the api
+        self.stockPriceCurrency = stockPriceCurrency
+        self.reportCurrency = reportCurrency
     def __str__(self):
         return '{}: {}'.format(self.insId, self.name)
 
