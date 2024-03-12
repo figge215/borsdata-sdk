@@ -30,13 +30,14 @@ class BorsdataAPI:
         self._root = "{host}/{version}".format(host=self._uri, version=self._version)
 
     def get_instrument_reports(
-        self, instrument_id: int, type="quarter"
+        self, instrument_id: int, type="quarter", max_count=10
     ) -> List[Report]:
         """Get reports for provided instrument
 
         Args:
             insId (str): instrument id
             type (str, optional): report type, one of year|quarter|r12. Defaults to 'quarter'.
+            max_count (int, optional): max number of reports to return. Defaults to 10.
 
         Raises:
             APIError: generic com. error
@@ -45,7 +46,8 @@ class BorsdataAPI:
             List[Report]: list of Reports
         """
 
-        status, data = self._get(f"/instruments/{instrument_id}/reports/{type}")
+        status, data = self._get(endpoint=f"/instruments/{instrument_id}/reports/{type}",
+                                 query_params={"maxCount": max_count})
 
         if status != HTTPStatus.OK:
             raise APIError
