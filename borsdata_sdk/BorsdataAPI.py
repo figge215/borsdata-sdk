@@ -241,7 +241,7 @@ class BorsdataAPI:
 
     def _get_data_object(self, data_type: str):
         """Gets the specified datatype from the remote API.
-        Transformes it to a proper data object if possible,
+        Transforms it to a proper data object if possible,
         otherwise the entire response payload is returned.
 
         Arguments:
