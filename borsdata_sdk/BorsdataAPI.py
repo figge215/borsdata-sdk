@@ -4,6 +4,7 @@ from http import HTTPStatus
 from requests import get
 import logging
 
+from .models.Kpi import Kpi
 from .models.Branch import Branch
 from .models.Instrument import Instrument
 from .models.InstrumentUpdate import InstrumentUpdate
@@ -238,6 +239,13 @@ class BorsdataAPI:
             StockSplit(**transform_dict_props_to_lower(split))
             for split in data.get("stockSplitList")
         ]
+
+    ##############################################################
+    def get_kpi_history(self, instrument_id, kpi_id, report_type="year", price_type='mean', max_count=10) -> List[Kpi]:
+        # https://github.com/Borsdata-Sweden/API/wiki/KPI-History
+        _, data = self._get(endpoint=f"/instruments/{instrument_id}/kpis/{kpi_id}/{report_type}/{price_type}/history",
+                            query_params={"maxCount": max_count})
+        return [Kpi(**item) for item in data.get('values')]
 
     def _get_data_object(self, data_type: str):
         """Gets the specified datatype from the remote API.
