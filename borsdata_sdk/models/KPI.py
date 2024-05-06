@@ -1,4 +1,4 @@
-class Kpi:
+class KPI:
     y: int
     p: int
     v: float
